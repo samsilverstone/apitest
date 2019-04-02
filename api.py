@@ -61,7 +61,6 @@ def function_name2():
                 pin.append(cur.fetchall()[0][0].strip())
         except TypeError:
             pass
-    print(pin)
     return render_template('Index3.html', leng=len(pin), pincode=pin)
     conn.close()
 
@@ -76,7 +75,6 @@ def function_name3():
     cur.execute('CREATE EXTENSION IF NOT EXISTS earthdistance')
     cur.execute('''select CSV.key from CSV where earth_distance(ll_to_earth({},{}),ll_to_earth(CSV.latitude,CSV.longitude))<=5000 '''.format(param.get('Lat'), param.get('Long')))
     pincode = cur.fetchall()
-    print(pincode)
     return render_template('Index.html', len=len(pincode), pincode=pincode)
     conn.close()
 
