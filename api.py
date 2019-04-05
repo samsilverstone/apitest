@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template
+from flask import jsonify
 from sqlalchemy import create_engine
 from math import cos, asin, sqrt
 import re
@@ -96,7 +97,7 @@ def function_name2():
                 pin.append(cur.fetchall()[0][0].strip())
         except TypeError:
             pass
-    return render_template('Index3.html', leng=len(pin), pincode=pin)
+    return jsonify(pincode=pin)
     conn.close()
 
 
@@ -118,7 +119,7 @@ def function_name3():
     cur.execute('CREATE EXTENSION IF NOT EXISTS earthdistance')
     cur.execute('''select CSV.key from CSV where earth_distance(ll_to_earth({},{}),ll_to_earth(CSV.latitude,CSV.longitude))<=5000 '''.format(param.get('Latitude'), param.get('Longitude')))
     pincode = cur.fetchall()
-    return render_template('Index.html', len=len(pincode), pincode=pincode)
+    return jsonify(pincode=pincode)
     conn.close()
 
 
@@ -139,7 +140,7 @@ def function_name4():
     cur.execute(
         "select name from geojson where (min_lat<={0} and max_lat>={0}) and (min_lon<={1} and max_lon>={1})".format(float(param.get('Latitude')), float(param.get('Longitude'))))
     location = cur.fetchall()
-    return render_template('Index2.html', leng=len(location), location=location)
+    return jsonify(location=location)
     conn.close()
 
 
