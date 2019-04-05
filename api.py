@@ -1,5 +1,3 @@
-from flask import Flask, request, render_template
-from flask import jsonify
 from flask import Flask, request
 from flask import jsonify
 from sqlalchemy import create_engine
@@ -42,17 +40,17 @@ def function_name1():
     else:
         return jsonify(error = "Wrong City entered", status="404")
 
-    if re.match('^$|^[0-9]$]', str(param.get("accuracy"))):
+    if re.match('^$|^\d', str(param.get("accuracy"))):
         pass
     else:
         return jsonify(error = "Wrong accuracy entered", status="404")
 
-    if re.match('^\d+\.'+'[0-9]'*(len(param.get("Latitude"))-3), str(param.get("Latitude"))):
+    if re.match('^\d+\.'+'[0-9]'*(len(str(param.get("Latitude")))-3), str(param.get("Latitude"))):
         pass
     else:
         return jsonify(error = "Wrong Latitude entered", status="404")
 
-    if re.match('^\d+\.'+'[0-9]'*(len(param.get("Longitude"))-3), str(param.get("Longitude"))):
+    if re.match('^\d+\.'+'[0-9]'*(len(str(param.get("Longitude")))-3), str(param.get("Longitude"))):
         pass
     else:
         return jsonify(error = "Wrong longitude entered", status="404")
@@ -63,7 +61,7 @@ def function_name1():
     for i in range(len(pin)):
         z.append("'"+pin[i][0].strip()+"'")
     if x in z:
-        return 'Pin exists'
+        return jsonify(Response="PIN EXISTS")
     else:
         cur.execute(
             '''INSERT INTO CSV(key,place_name,admin_name1,latitude,longitude,accuracy) 
