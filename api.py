@@ -1,5 +1,7 @@
 from flask import Flask, request, render_template
 from flask import jsonify
+from flask import Flask, request
+from flask import jsonify
 from sqlalchemy import create_engine
 from math import cos, asin, sqrt
 import re
@@ -28,27 +30,32 @@ def function_name1():
     if re.match('^IN/[1-9][0-9][0-9][0-9][0-9][0-9]', param.get("pin")):
         pass
     else:
-        return 'Incorrect Value for Pin'
+        return jsonify(error = "Wrong Pincode entered", status="404")
+
     if re.match('^.*', str(param.get("address"))):
         pass
     else:
-        return 'Address should be a string'
+        return jsonify(error = "Wrong address entered", status="404")
+
     if re.match('^.*', str(param.get("city"))):
         pass
     else:
-        return 'City should be a string'
+        return jsonify(error = "Wrong City entered", status="404")
+
     if re.match('^$|^[0-9]$]', str(param.get("accuracy"))):
         pass
     else:
-        return 'Incorrect Accuracy'
+        return jsonify(error = "Wrong accuracy entered", status="404")
+
     if re.match('^\d+\.'+'[0-9]'*(len(param.get("Latitude"))-3), str(param.get("Latitude"))):
         pass
     else:
-        return'Incorrect format for Latitude'
+        return jsonify(error = "Wrong Latitude entered", status="404")
+
     if re.match('^\d+\.'+'[0-9]'*(len(param.get("Longitude"))-3), str(param.get("Longitude"))):
         pass
     else:
-        return 'Incorrect format for Longitude'
+        return jsonify(error = "Wrong longitude entered", status="404")
 
     cur.execute("select key from CSV")
     pin = cur.fetchall()
@@ -64,7 +71,7 @@ def function_name1():
         conn.commit()
 
     conn.close()
-    return 'Inserted Successfully'
+    return jsonify(Text='Inserted Successfully')
 
 
 @app.route("/get_using_self", methods=['GET'])
@@ -73,16 +80,18 @@ def function_name2():
     param = {'Latitude': req.get('Latitude'), 'Longitude': req.get('Longitude')}
     pin = []
     conn = postgre_engine.raw_connection()
-    lat1 = float(param.get('Latitude'))
-    lon1 = float(param.get('Longitude'))
-    if re.match('^\d+\.'+'[0-9]'*(len(param.get("Latitude"))-3), str(param.get("Latitude"))):
+
+    if re.match('^\d+\.'+'[0-9]'*(len(str(param.get("Latitude")))-3), str(param.get("Latitude"))):
         pass
     else:
-        return'Incorrect format for Latitude'
+        return jsonify(error = "Wrong latitude entered", status="404")
+
     if re.match('^\d+\.'+'[0-9]'*(len(str(param.get("Longitude")))-3), str(param.get("Longitude"))):
         pass
     else:
-        return 'Incorrect format for Longitude'
+        return jsonify(error = "Wrong longitude entered", status="404")
+    lat1 = float(param.get('Latitude'))
+    lon1 = float(param.get('Longitude'))
     cur = conn.cursor()
     cur.execute('select CSV.latitude from CSV')
     lat2 = cur.fetchall()
@@ -108,11 +117,13 @@ def function_name3():
     if re.match('^\d+\.'+'[0-9]'*(len(str(param.get("Latitude")))-3), str(param.get("Latitude"))):
         pass
     else:
-        return'Incorrect format for Latitude'
+        return jsonify(error = "Wrong latitude entered", status="404")
+
     if re.match('^\d+\.'+'[0-9]'*(len(str(param.get("Longitude")))-3), str(param.get("Longitude"))):
         pass
     else:
-        return 'Incorrect format for Longitude'
+        return jsonify(error = "Wrong longitude entered", status="404")
+
     conn = postgre_engine.raw_connection()
     cur = conn.cursor()
     cur.execute('CREATE EXTENSION IF NOT EXISTS cube')
@@ -130,11 +141,12 @@ def function_name4():
     if re.match('^\d+\.'+'[0-9]'*(len(str(param.get("Latitude")))-3), str(param.get("Latitude"))):
         pass
     else:
-        return'Incorrect format for Latitude'
+        return jsonify(error = "Wrong latitude entered", status="404")
     if re.match('^\d+\.'+'[0-9]'*(len(str(param.get("Longitude")))-3), str(param.get("Longitude"))):
         pass
     else:
-        return 'Incorrect format for Longitude'
+        return jsonify(error = "Wrong Longitude entered", status="404")
+
     conn = postgre_engine.raw_connection()
     cur = conn.cursor()
     cur.execute(
