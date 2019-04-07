@@ -43,7 +43,7 @@ def function_name1():
     else:
         return make_response( jsonify(error = "Wrong City entered", status="404"), 404)
 
-    if re.match('^$|^\d', str(param.get("accuracy"))):
+    if re.match('^$|^[0-9]$', str(param.get("accuracy"))):
         pass
     else:
         return make_response( jsonify(error = "Wrong accuracy entered", status="404"), 404)
