@@ -1,4 +1,4 @@
-from .api import app
+from apitest.api import app
 
 def create_app(config_object=None):
 
