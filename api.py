@@ -176,7 +176,7 @@ def function_name4():
     if re.match('^[0-9]*$|^[0-9]*\.[0-9]*$', str(param.get("Longitude"))):
         pass
     else:
-        return make_response(jsonify(error="Wrong Longitude entered", status="404"), 404)
+        return make_response(jsonify(error="Wrong longitude entered", status="404"), 404)
 
     conn = postgre_engine.raw_connection()
     cur = conn.cursor()
