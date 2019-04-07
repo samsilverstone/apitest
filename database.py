@@ -2,7 +2,10 @@ import json
 import psycopg2
 import csv
 
+from dotenv import load_dotenv
+import os
 
+load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 class Table:
 
     def __init__(self):
@@ -71,12 +74,40 @@ class Table:
             self.cur.execute(
                 '''INSERT INTO geojson(name,Type,Parent,geometry_type,coordinates,min_lat,max_lat,min_lon,max_lon) VALUES ({},{},{},{},{},{},{},{},{})'''.format(
                     self.output1, self.output2, self.output3, self.output4, self.output5, self.min_lat, self.max_lat, self.min_long, self.max_long))
+        
+    def clear_database(self):
+        self.cur.execute('''
+            DROP SCHEMA public CASCADE
+            ''')
+        
+        self.cur.execute('''
+            CREATE SCHEMA public
+            ''')
 
 
-def main():
+def main(config_obj=None):
     obj = Table()
-    obj.conn = psycopg2.connect(database='mydb', user='sanjay', password='mclarenf1!@#', host='127.0.0.1', port='5432')
+
+    if config_obj != None:
+        obj.conn = psycopg2.connect(
+            database=config_obj.DB_NAME,
+            user=config_obj.DB_USER,
+            host='127.0.0.1', 
+            port=config_obj.DB_PORT,
+            password=config_obj.DB_PASSWORD,
+        )
+    
+    else:
+        obj.conn = psycopg2.connect(
+            database=os.getenv('DB_NAME'),
+            user=os.getenv('DB_USER'),
+            host='127.0.0.1', 
+            port=os.getenv('DB_PORT'),
+            password=os.getenv('DB_PASSWORD')
+        )
+
     obj.cur = obj.conn.cursor()
+    obj.clear_database()
     obj.create_csv()
     obj.insert_csv()
     obj.geojson()
@@ -86,6 +117,4 @@ def main():
     obj.conn.close()
     print("Values entered Successfully")
 
-
-if __name__ == "__main__":
-    main()
+main()
