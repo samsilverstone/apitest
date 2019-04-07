@@ -1,4 +1,4 @@
-from apitest.create import create_app
+from apitest.create_test import create_app
 from apitest.config import TestConfig
 from apitest.database import main
 import unittest
