@@ -9,3 +9,37 @@ Getting Started
 5. After this, run the test cases by using 'pytest' command.
 5. After we are done with testing, we can run the server using this command 'python run.py' and can interact with the API by using      postman.
 
+Postman
+1. Structure for /post_location (json format)
+
+{
+	"pin":"IN/110067",
+	"Latitude":"27.208",
+	"Longitude":"8.013426",
+	"address":"Khanpur",
+	"city": "New Delhi",
+	"accuracy": "4"
+}
+
+2. Structure for /get_using_self (json format)
+{
+	"Latitude":"28.597",
+	"Longitude":"77.212",
+	"Value":5 #(kms)
+	
+}
+
+3. Structure for /get_using_postgres (json format)
+{
+	"Latitude":"28.597",
+	"Longitude":"77.212",
+	"Value":5 #(kms)
+	
+}
+
+4. Structure for /latitude_longitude (json format)
+
+{
+	"Latitude":"28.597",
+	"Longitude":"77.212"
+}
